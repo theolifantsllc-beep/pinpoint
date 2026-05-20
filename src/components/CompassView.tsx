@@ -15,6 +15,8 @@ interface Props {
   compassAvailable: boolean
   onManualChange: (h: number) => void
   onGameMode: () => void
+  onInvisibleLines: () => void
+  onFlightRadar: () => void
 }
 
 export default function CompassView({
@@ -24,6 +26,8 @@ export default function CompassView({
   manualHeading,
   onManualChange,
   onGameMode,
+  onInvisibleLines,
+  onFlightRadar,
 }: Props) {
   const results = useMemo(() => {
     return CITIES
@@ -48,12 +52,28 @@ export default function CompassView({
           <h1 className="font-mono font-bold text-radar-accent text-xl tracking-widest">PINPOINT</h1>
           <p className="font-mono text-xs text-slate-500">Compass mode</p>
         </div>
-        <button
-          onClick={onGameMode}
-          className="px-3 py-2 rounded-lg border border-radar-accent/40 bg-radar-accent/10 text-radar-accent font-mono text-xs font-bold tracking-wider active:scale-95 transition-all"
-        >
-          GAME MODE
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={onInvisibleLines}
+            className="px-2 py-2 rounded-lg border border-slate-600/50 bg-slate-800/50 text-slate-300 font-mono text-xs font-bold tracking-wider active:scale-95 transition-all"
+            title="Invisible Lines"
+          >
+            〰️
+          </button>
+          <button
+            onClick={onFlightRadar}
+            className="px-2 py-2 rounded-lg border border-slate-600/50 bg-slate-800/50 text-slate-300 font-mono text-xs font-bold tracking-wider active:scale-95 transition-all"
+            title="Flight Radar"
+          >
+            ✈️
+          </button>
+          <button
+            onClick={onGameMode}
+            className="px-3 py-2 rounded-lg border border-radar-accent/40 bg-radar-accent/10 text-radar-accent font-mono text-xs font-bold tracking-wider active:scale-95 transition-all"
+          >
+            GAME
+          </button>
+        </div>
       </div>
 
       {/* Compass */}

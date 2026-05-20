@@ -2,9 +2,11 @@ import { useState, useEffect, useCallback } from 'react'
 import PermissionScreen from './components/PermissionScreen'
 import CompassView from './components/CompassView'
 import GameMode from './components/GameMode'
+import InvisibleLines from './components/InvisibleLines'
+import FlightRadarMode from './components/FlightRadarMode'
 import { requestCompassPermission, startCompass } from './utils/compass'
 
-type Screen = 'permission' | 'compass' | 'game'
+type Screen = 'permission' | 'compass' | 'game' | 'lines' | 'flight'
 
 export interface AppState {
   locationGranted: boolean
@@ -107,6 +109,32 @@ export default function App() {
     )
   }
 
+  if (screen === 'lines') {
+    return (
+      <InvisibleLines
+        userLat={state.userLat!}
+        userLon={state.userLon!}
+        heading={state.heading}
+        manualHeading={state.manualHeading}
+        onManualChange={handleManualChange}
+        onBack={() => setScreen('compass')}
+      />
+    )
+  }
+
+  if (screen === 'flight') {
+    return (
+      <FlightRadarMode
+        userLat={state.userLat!}
+        userLon={state.userLon!}
+        heading={state.heading}
+        manualHeading={state.manualHeading}
+        onManualChange={handleManualChange}
+        onBack={() => setScreen('compass')}
+      />
+    )
+  }
+
   return (
     <CompassView
       userLat={state.userLat!}
@@ -116,6 +144,8 @@ export default function App() {
       compassAvailable={state.compassAvailable}
       onManualChange={handleManualChange}
       onGameMode={() => setScreen('game')}
+      onInvisibleLines={() => setScreen('lines')}
+      onFlightRadar={() => setScreen('flight')}
     />
   )
 }
