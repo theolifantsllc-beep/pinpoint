@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, type ReactNode } from 'react'
 import RadarCompass from './RadarCompass'
 import CityResultCard from './CityResultCard'
 import ManualHeadingControl from './ManualHeadingControl'
@@ -17,6 +17,7 @@ interface Props {
   onGameMode: () => void
   onInvisibleLines: () => void
   onFlightRadar: () => void
+  onSearch: () => void
 }
 
 export default function CompassView({
@@ -28,6 +29,7 @@ export default function CompassView({
   onGameMode,
   onInvisibleLines,
   onFlightRadar,
+  onSearch,
 }: Props) {
   const results = useMemo(() => {
     return CITIES
@@ -52,27 +54,11 @@ export default function CompassView({
           <h1 className="font-mono font-bold text-radar-accent text-xl tracking-widest">PINPOINT</h1>
           <p className="font-mono text-xs text-slate-500">Compass mode</p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={onInvisibleLines}
-            className="px-2 py-2 rounded-lg border border-slate-600/50 bg-slate-800/50 text-slate-300 font-mono text-xs font-bold tracking-wider active:scale-95 transition-all"
-            title="Invisible Lines"
-          >
-            〰️
-          </button>
-          <button
-            onClick={onFlightRadar}
-            className="px-2 py-2 rounded-lg border border-slate-600/50 bg-slate-800/50 text-slate-300 font-mono text-xs font-bold tracking-wider active:scale-95 transition-all"
-            title="Flight Radar"
-          >
-            ✈️
-          </button>
-          <button
-            onClick={onGameMode}
-            className="px-3 py-2 rounded-lg border border-radar-accent/40 bg-radar-accent/10 text-radar-accent font-mono text-xs font-bold tracking-wider active:scale-95 transition-all"
-          >
-            GAME
-          </button>
+        <div className="flex gap-1.5">
+          <ModeBtn onClick={onSearch} title="Search & Point">🔍</ModeBtn>
+          <ModeBtn onClick={onInvisibleLines} title="Invisible Lines">〰️</ModeBtn>
+          <ModeBtn onClick={onFlightRadar} title="Flight Radar">✈️</ModeBtn>
+          <ModeBtn onClick={onGameMode} title="Game Mode" accent>▶</ModeBtn>
         </div>
       </div>
 
@@ -130,5 +116,26 @@ export default function CompassView({
         )}
       </div>
     </div>
+  )
+}
+
+function ModeBtn({ onClick, title, children, accent }: {
+  onClick: () => void
+  title: string
+  children: ReactNode
+  accent?: boolean
+}) {
+  return (
+    <button
+      onClick={onClick}
+      title={title}
+      className={`w-9 h-9 rounded-lg border flex items-center justify-center text-base active:scale-95 transition-all ${
+        accent
+          ? 'border-radar-accent/50 bg-radar-accent/10 text-radar-accent'
+          : 'border-slate-700/60 bg-slate-800/50 text-slate-400'
+      }`}
+    >
+      {children}
+    </button>
   )
 }
