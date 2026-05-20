@@ -5,9 +5,10 @@ import GameMode from './components/GameMode'
 import InvisibleLines from './components/InvisibleLines'
 import FlightRadarMode from './components/FlightRadarMode'
 import SearchPoint from './components/SearchPoint'
+import CountrySweepMode from './components/CountrySweepMode'
 import { requestCompassPermission, startCompass } from './utils/compass'
 
-type Screen = 'permission' | 'compass' | 'game' | 'lines' | 'flight' | 'search'
+type Screen = 'permission' | 'compass' | 'game' | 'lines' | 'flight' | 'search' | 'sweep'
 
 export interface AppState {
   locationGranted: boolean
@@ -136,6 +137,19 @@ export default function App() {
     )
   }
 
+  if (screen === 'sweep') {
+    return (
+      <CountrySweepMode
+        userLat={state.userLat!}
+        userLon={state.userLon!}
+        heading={state.heading}
+        manualHeading={state.manualHeading}
+        onManualChange={handleManualChange}
+        onBack={() => setScreen('compass')}
+      />
+    )
+  }
+
   if (screen === 'flight') {
     return (
       <FlightRadarMode
@@ -161,6 +175,7 @@ export default function App() {
       onInvisibleLines={() => setScreen('lines')}
       onFlightRadar={() => setScreen('flight')}
       onSearch={() => setScreen('search')}
+      onSweep={() => setScreen('sweep')}
     />
   )
 }
