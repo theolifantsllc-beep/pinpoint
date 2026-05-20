@@ -6,9 +6,10 @@ import InvisibleLines from './components/InvisibleLines'
 import FlightRadarMode from './components/FlightRadarMode'
 import SearchPoint from './components/SearchPoint'
 import CountrySweepMode from './components/CountrySweepMode'
+import WorldLayersMode from './components/WorldLayersMode'
 import { requestCompassPermission, startCompass } from './utils/compass'
 
-type Screen = 'permission' | 'compass' | 'game' | 'lines' | 'flight' | 'search' | 'sweep'
+type Screen = 'permission' | 'compass' | 'game' | 'lines' | 'flight' | 'search' | 'sweep' | 'layers'
 
 export interface AppState {
   locationGranted: boolean
@@ -163,6 +164,19 @@ export default function App() {
     )
   }
 
+  if (screen === 'layers') {
+    return (
+      <WorldLayersMode
+        userLat={state.userLat!}
+        userLon={state.userLon!}
+        heading={state.heading}
+        manualHeading={state.manualHeading}
+        onManualChange={handleManualChange}
+        onBack={() => setScreen('compass')}
+      />
+    )
+  }
+
   return (
     <CompassView
       userLat={state.userLat!}
@@ -176,6 +190,7 @@ export default function App() {
       onFlightRadar={() => setScreen('flight')}
       onSearch={() => setScreen('search')}
       onSweep={() => setScreen('sweep')}
+      onLayers={() => setScreen('layers')}
     />
   )
 }

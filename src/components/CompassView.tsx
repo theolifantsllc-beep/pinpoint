@@ -19,6 +19,7 @@ interface Props {
   onFlightRadar: () => void
   onSearch: () => void
   onSweep: () => void
+  onLayers: () => void
 }
 
 export default function CompassView({
@@ -32,6 +33,7 @@ export default function CompassView({
   onFlightRadar,
   onSearch,
   onSweep,
+  onLayers,
 }: Props) {
   const results = useMemo(() => {
     return CITIES
@@ -61,6 +63,7 @@ export default function CompassView({
           <ModeBtn onClick={onInvisibleLines} title="Invisible Lines">〰️</ModeBtn>
           <ModeBtn onClick={onFlightRadar} title="Flight Radar">✈️</ModeBtn>
           <ModeBtn onClick={onSweep} title="Country Sweep">🌍</ModeBtn>
+          <ModeBtn onClick={onLayers} title="World Layers">🌐</ModeBtn>
           <ModeBtn onClick={onGameMode} title="Game Mode" accent>▶</ModeBtn>
         </div>
       </div>
