@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: #030d12;
+  color: #e0f7ff;
+  font-family: 'JetBrains Mono', monospace;
+  overscroll-behavior: none;
+}
+
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ping-slow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px #00e5ff44; }
+  50% { box-shadow: 0 0 20px #00e5ff99, 0 0 40px #00e5ff33; }
+}
+
+@keyframes scan-line {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.radar-sweep {
+  animation: scan-line 4s linear infinite;
+  transform-origin: center bottom;
+}
+
+.glow-accent {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.result-card-enter {
+  animation: fadeSlideIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollable results list */
+.results-list {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.results-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.results-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.results-list::-webkit-scrollbar-thumb {
+  background: #0d3a4f;
+  border-radius: 2px;
+}
