@@ -57,6 +57,11 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes waveBar {
+  0% { height: 15%; }
+  100% { height: 85%; }
+}
+
 /* Scrollable results list */
 .results-list {
   overflow-y: auto;

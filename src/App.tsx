@@ -7,9 +7,11 @@ import FlightRadarMode from './components/FlightRadarMode'
 import SearchPoint from './components/SearchPoint'
 import CountrySweepMode from './components/CountrySweepMode'
 import WorldLayersMode from './components/WorldLayersMode'
+import RadioEarthMode from './components/RadioEarthMode'
+import SatelliteMode from './components/SatelliteMode'
 import { requestCompassPermission, startCompass } from './utils/compass'
 
-type Screen = 'permission' | 'compass' | 'game' | 'lines' | 'flight' | 'search' | 'sweep' | 'layers'
+type Screen = 'permission' | 'compass' | 'game' | 'lines' | 'flight' | 'search' | 'sweep' | 'layers' | 'radio' | 'satellite'
 
 export interface AppState {
   locationGranted: boolean
@@ -177,6 +179,32 @@ export default function App() {
     )
   }
 
+  if (screen === 'radio') {
+    return (
+      <RadioEarthMode
+        userLat={state.userLat!}
+        userLon={state.userLon!}
+        heading={state.heading}
+        manualHeading={state.manualHeading}
+        onManualChange={handleManualChange}
+        onBack={() => setScreen('compass')}
+      />
+    )
+  }
+
+  if (screen === 'satellite') {
+    return (
+      <SatelliteMode
+        userLat={state.userLat!}
+        userLon={state.userLon!}
+        heading={state.heading}
+        manualHeading={state.manualHeading}
+        onManualChange={handleManualChange}
+        onBack={() => setScreen('compass')}
+      />
+    )
+  }
+
   return (
     <CompassView
       userLat={state.userLat!}
@@ -191,6 +219,8 @@ export default function App() {
       onSearch={() => setScreen('search')}
       onSweep={() => setScreen('sweep')}
       onLayers={() => setScreen('layers')}
+      onRadio={() => setScreen('radio')}
+      onSatellite={() => setScreen('satellite')}
     />
   )
 }

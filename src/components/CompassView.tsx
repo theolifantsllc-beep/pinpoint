@@ -20,6 +20,8 @@ interface Props {
   onSearch: () => void
   onSweep: () => void
   onLayers: () => void
+  onRadio: () => void
+  onSatellite: () => void
 }
 
 export default function CompassView({
@@ -34,6 +36,8 @@ export default function CompassView({
   onSearch,
   onSweep,
   onLayers,
+  onRadio,
+  onSatellite,
 }: Props) {
   const results = useMemo(() => {
     return CITIES
@@ -64,6 +68,8 @@ export default function CompassView({
           <ModeBtn onClick={onFlightRadar} title="Flight Radar">✈️</ModeBtn>
           <ModeBtn onClick={onSweep} title="Country Sweep">🌍</ModeBtn>
           <ModeBtn onClick={onLayers} title="World Layers">🌐</ModeBtn>
+          <ModeBtn onClick={onRadio} title="Radio Earth">📻</ModeBtn>
+          <ModeBtn onClick={onSatellite} title="Satellite Mode">🛸</ModeBtn>
           <ModeBtn onClick={onGameMode} title="Game Mode" accent>▶</ModeBtn>
         </div>
       </div>
