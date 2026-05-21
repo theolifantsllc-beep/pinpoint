@@ -115,14 +115,18 @@ export default function CompassView({
       </div>
 
       {/* Compass */}
-      <div className="flex flex-col items-center py-2">
+      <div className="flex flex-col items-center pt-1 pb-0">
         <RadarCompass heading={heading} />
 
-        {/* Heading readout */}
-        <div className="mt-2 text-center">
-          <span className="font-mono text-5xl font-bold text-white">{Math.round(heading)}</span>
-          <span className="font-mono text-2xl text-radar-accent ml-1">°</span>
-          <div className="font-mono text-lg text-radar-accent tracking-widest mt-0.5">{dirLabel}</div>
+        {/* Heading readout — overlaid just below compass */}
+        <div className="flex items-baseline gap-1 -mt-1">
+          <span className="font-mono text-4xl font-bold text-white tabular-nums leading-none">
+            {Math.round(heading).toString().padStart(3, '0')}
+          </span>
+          <span className="font-mono text-xl text-radar-accent leading-none">°</span>
+          <span className="font-mono text-xl font-bold text-radar-accent tracking-widest ml-1 leading-none">
+            {dirLabel}
+          </span>
         </div>
       </div>
 
@@ -135,25 +139,27 @@ export default function CompassView({
 
       {/* Results */}
       <div className="flex-1 flex flex-col min-h-0 px-4 pb-safe-bottom pb-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-mono text-xs text-slate-500 tracking-wider">
-            POINTING {dirLabel} — {Math.round(heading)}°
+        {/* Section header */}
+        <div className="flex items-center gap-3 mb-2.5">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
+          <span className="font-mono text-xs text-slate-600 tracking-widest shrink-0">
+            {results.length > 0
+              ? `${results.length} CITIES  ·  ±${THRESHOLD}°`
+              : `SCANNING  ·  ±${THRESHOLD}°`}
           </span>
-          <span className="font-mono text-xs text-slate-600">
-            {results.length} found (±{THRESHOLD}°)
-          </span>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
         </div>
 
         {results.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
-            <div className="w-12 h-12 rounded-full border border-slate-700 flex items-center justify-center mb-3">
-              <span className="text-slate-600 text-xl">◎</span>
+          <div className="flex-1 flex flex-col items-center justify-center text-center">
+            <div className="w-14 h-14 rounded-full border border-slate-800 bg-radar-panel/60 flex items-center justify-center mb-4">
+              <span className="text-slate-700 text-2xl">◎</span>
             </div>
-            <p className="font-mono text-slate-500 text-sm">No cities in this direction</p>
-            <p className="font-mono text-slate-600 text-xs mt-1">Rotate to find matches</p>
+            <p className="font-mono text-slate-500 text-sm">Nothing in this direction</p>
+            <p className="font-mono text-slate-700 text-xs mt-1.5">Rotate slowly to scan</p>
           </div>
         ) : (
-          <div className="results-list flex-1 space-y-2">
+          <div className="results-list flex-1 space-y-1.5">
             {results.map((r, i) => (
               <CityResultCard
                 key={r.city.id}
