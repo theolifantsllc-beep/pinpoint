@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from 'react'
+import { useMemo, useState } from 'react'
 import RadarCompass from './RadarCompass'
 import CityResultCard from './CityResultCard'
 import ManualHeadingControl from './ManualHeadingControl'
@@ -52,26 +52,66 @@ export default function CompassView({
       .slice(0, 10)
   }, [userLat, userLon, heading])
 
+  const [menuOpen, setMenuOpen] = useState(false)
   const dirLabel = bearingLabel(heading)
+
+  const MODES = [
+    { icon: '🔍', label: 'Search',    onClick: onSearch },
+    { icon: '〰️', label: 'Lines',     onClick: onInvisibleLines },
+    { icon: '✈️', label: 'Flights',   onClick: onFlightRadar },
+    { icon: '🌍', label: 'Sweep',     onClick: onSweep },
+    { icon: '🌐', label: 'Layers',    onClick: onLayers },
+    { icon: '📻', label: 'Radio',     onClick: onRadio },
+    { icon: '🛸', label: 'Satellite', onClick: onSatellite },
+    { icon: '▶',  label: 'Game',      onClick: onGameMode, accent: true },
+  ]
 
   return (
     <div className="flex flex-col h-screen bg-radar-bg overflow-hidden select-none">
+      {/* Menu overlay */}
+      {menuOpen && (
+        <div
+          className="absolute inset-0 z-40 bg-black/60 backdrop-blur-sm flex flex-col justify-end"
+          onClick={() => setMenuOpen(false)}
+        >
+          <div
+            className="bg-radar-panel border-t border-slate-700/60 rounded-t-2xl px-4 pt-4 pb-safe-bottom pb-6"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="w-10 h-1 rounded-full bg-slate-700 mx-auto mb-4" />
+            <p className="font-mono text-xs text-slate-500 tracking-widest text-center mb-3">SELECT MODE</p>
+            <div className="grid grid-cols-4 gap-3">
+              {MODES.map(m => (
+                <button
+                  key={m.label}
+                  onClick={() => { setMenuOpen(false); m.onClick() }}
+                  className={`flex flex-col items-center gap-1.5 py-3 rounded-xl border active:scale-95 transition-all ${
+                    m.accent
+                      ? 'border-radar-accent/50 bg-radar-accent/10 text-radar-accent'
+                      : 'border-slate-700/60 bg-slate-800/50 text-slate-300'
+                  }`}
+                >
+                  <span className="text-xl leading-none">{m.icon}</span>
+                  <span className="font-mono text-xs text-slate-400">{m.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-safe-top pt-4 pb-2">
         <div>
           <h1 className="font-mono font-bold text-radar-accent text-xl tracking-widest">PINPOINT</h1>
           <p className="font-mono text-xs text-slate-500">Compass mode</p>
         </div>
-        <div className="flex gap-1.5">
-          <ModeBtn onClick={onSearch} title="Search & Point">🔍</ModeBtn>
-          <ModeBtn onClick={onInvisibleLines} title="Invisible Lines">〰️</ModeBtn>
-          <ModeBtn onClick={onFlightRadar} title="Flight Radar">✈️</ModeBtn>
-          <ModeBtn onClick={onSweep} title="Country Sweep">🌍</ModeBtn>
-          <ModeBtn onClick={onLayers} title="World Layers">🌐</ModeBtn>
-          <ModeBtn onClick={onRadio} title="Radio Earth">📻</ModeBtn>
-          <ModeBtn onClick={onSatellite} title="Satellite Mode">🛸</ModeBtn>
-          <ModeBtn onClick={onGameMode} title="Game Mode" accent>▶</ModeBtn>
-        </div>
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="w-10 h-10 rounded-xl border border-slate-700/60 bg-slate-800/50 flex items-center justify-center text-slate-400 active:scale-95 transition-all"
+        >
+          ☰
+        </button>
       </div>
 
       {/* Compass */}
@@ -131,23 +171,3 @@ export default function CompassView({
   )
 }
 
-function ModeBtn({ onClick, title, children, accent }: {
-  onClick: () => void
-  title: string
-  children: ReactNode
-  accent?: boolean
-}) {
-  return (
-    <button
-      onClick={onClick}
-      title={title}
-      className={`w-9 h-9 rounded-lg border flex items-center justify-center text-base active:scale-95 transition-all ${
-        accent
-          ? 'border-radar-accent/50 bg-radar-accent/10 text-radar-accent'
-          : 'border-slate-700/60 bg-slate-800/50 text-slate-400'
-      }`}
-    >
-      {children}
-    </button>
-  )
-}
